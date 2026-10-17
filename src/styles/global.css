@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@layer base {
+  body {
+    @apply bg-bg font-sans text-ink antialiased;
+  }
+
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+}

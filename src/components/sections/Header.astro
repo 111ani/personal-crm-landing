@@ -1,0 +1,11 @@
+---
+import Button from "../Button.astro";
+import Eyebrow from "../Eyebrow.astro";
+---
+
+<!-- Desktop only: on mobile the eyebrow sits in the hero. -->
+<header class="mx-auto hidden max-w-1200 items-center justify-between gap-24 px-40 py-28 md:flex">
+  <Eyebrow class="font-semibold">Личная CRM</Eyebrow>
+  <!-- h-44 = 42px content + 1px border on each side, as rendered in the reference. -->
+  <Button variant="outline" class="h-44 px-22 text-button-sm font-semibold">Начать бесплатно</Button>
+</header>

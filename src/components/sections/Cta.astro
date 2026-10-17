@@ -1,0 +1,30 @@
+---
+import Button from "../Button.astro";
+import Eyebrow from "../Eyebrow.astro";
+---
+
+<section class="mx-auto max-w-1200 px-12 pb-12 md:px-40 md:pb-40">
+  <div
+    class="flex flex-col items-center rounded-cta bg-accent-soft px-24 pt-52 pb-40 text-center text-white md:px-32 md:pt-96 md:pb-80"
+  >
+    <Eyebrow tone="light">Личная CRM</Eyebrow>
+    <h2 class="mt-16 font-serif text-heading-cta font-medium whitespace-nowrap md:mt-22 md:whitespace-normal">
+      Близкие люди — <i class="font-normal">ближе!</i>
+    </h2>
+    <p class="mt-16 text-body text-cta-text-2 md:mt-20">Начните с 10 самых важных для вас людей.</p>
+
+    <Button
+      variant="light"
+      class="mt-28 h-56 self-stretch text-button-cta font-bold md:mt-36 md:h-60 md:self-center md:px-56"
+    >
+      Начать
+    </Button>
+
+    <!-- Two lines on mobile, one line with a dot separator on desktop. -->
+    <p class="mt-18 flex flex-col gap-6 text-note text-cta-text-3 md:mt-22 md:block">
+      <span>Настройка за 5 минут</span><span class="hidden md:inline"> · </span><span
+        >Ваши персональные данные видите только вы</span
+      >
+    </p>
+  </div>
+</section>

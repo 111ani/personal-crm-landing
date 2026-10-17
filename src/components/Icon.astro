@@ -1,0 +1,27 @@
+---
+import bell from "../assets/icons/bell.svg";
+import calendar from "../assets/icons/calendar.svg";
+import card from "../assets/icons/card.svg";
+import mic from "../assets/icons/mic.svg";
+import note from "../assets/icons/note.svg";
+import search from "../assets/icons/search.svg";
+
+const icons = { bell, calendar, card, mic, note, search };
+
+interface Props {
+  name: keyof typeof icons;
+  class?: string;
+  label?: string;
+}
+
+const { name, class: className, label } = Astro.props;
+const Svg = icons[name];
+---
+
+{
+  label ? (
+    <Svg class:list={["text-accent", className]} role="img" aria-label={label} />
+  ) : (
+    <Svg class:list={["text-accent", className]} aria-hidden="true" />
+  )
+}

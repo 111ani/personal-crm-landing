@@ -1,0 +1,69 @@
+---
+import { Image } from "astro:assets";
+import notebook from "../../assets/notebook.png";
+import { heroFeatures } from "../../data/content";
+import Button from "../Button.astro";
+import Eyebrow from "../Eyebrow.astro";
+import Icon from "../Icon.astro";
+
+// Mobile grid: the photo takes rows 1–3 of column 1, the first three features fill column 2,
+// the last two share row 4. On desktop the list is a plain column next to the photo.
+const mobilePlacement = [
+  "max-md:col-start-2 max-md:row-start-1 border-b",
+  "max-md:col-start-2 max-md:row-start-2 border-b",
+  "max-md:col-start-2 max-md:row-start-3 border-b",
+  "max-md:col-start-2 max-md:row-start-4 max-md:self-start md:border-b",
+  "max-md:col-start-1 max-md:row-start-4 max-md:self-start",
+];
+---
+
+<section class="mx-auto flex max-w-1200 flex-col items-center px-20 pt-44 pb-24 md:px-40 md:pt-48 md:pb-96">
+  <Eyebrow class="mb-14 md:hidden">Личная CRM</Eyebrow>
+
+  <h1 class="text-center font-serif text-display font-medium">
+    <span class="block max-md:whitespace-nowrap">Ваш круг общения</span>
+    <i class="block font-normal text-accent max-md:whitespace-nowrap">в одном месте</i>
+  </h1>
+
+  <p class="mt-16 max-w-560 text-center text-lead text-balance text-muted md:mt-24">
+    Личная CRM помогает помнить детали и поддерживать связь с друзьями, коллегами, партнёрами и новыми знакомыми.
+  </p>
+
+  <Button class="mt-22 h-52 px-34 text-button font-semibold md:mt-32 md:h-58 md:px-40">Начать бесплатно</Button>
+
+  <div
+    class="mt-26 grid grid-cols-[var(--hero-photo-width)_minmax(0,1fr)] gap-x-14 self-stretch md:mt-72 md:w-full md:max-w-960 md:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] md:items-center md:gap-48 md:self-center"
+  >
+    <div
+      class="flex items-start border-line max-md:col-start-1 max-md:row-span-3 max-md:row-start-1 max-md:border-b max-md:pb-12 md:w-full md:max-w-340 md:justify-self-center"
+    >
+      <Image
+        src={notebook}
+        alt=""
+        widths={[160, 320, 356]}
+        sizes="(min-width: 768px) 340px, 160px"
+        loading="eager"
+        class="block aspect-356/648 w-full rounded-photo object-contain"
+      />
+    </div>
+
+    <ul class="contents md:flex md:flex-col">
+      {
+        heroFeatures.map((feature, index) => (
+          <li class:list={["flex gap-10 border-line py-12 md:gap-18 md:py-22", mobilePlacement[index]]}>
+            <Icon name={feature.icon} class="mt-2 size-26 shrink-0 md:mt-0 md:size-32 md:stroke-[1.3]" />
+            <div class="flex flex-col gap-6">
+              <p class="font-serif text-feature-title font-medium">{feature.title}</p>
+              <p class="text-feature-text text-ink-2">
+                {feature.text}{" "}
+                {feature.voice && (
+                  <Icon name="mic" label="голосом" class="inline-block size-13 align-[-2px] md:size-15" />
+                )}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

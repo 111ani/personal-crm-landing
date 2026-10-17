@@ -1,0 +1,12 @@
+---
+interface Props {
+  tone?: "accent" | "light";
+  class?: string;
+}
+
+const { tone = "accent", class: className } = Astro.props;
+---
+
+<p class:list={["text-eyebrow uppercase", tone === "light" ? "text-cta-text-3" : "text-accent", className]}>
+  <slot />
+</p>

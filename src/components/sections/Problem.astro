@@ -1,0 +1,37 @@
+---
+import { formatNumber, problems } from "../../data/content";
+import Eyebrow from "../Eyebrow.astro";
+---
+
+<section class="border-t border-line">
+  <!--
+    Mobile: one centered column, the conclusion goes after the list (order-last).
+    Desktop: heading and conclusion on the left, list on the right.
+  -->
+  <div
+    class="mx-auto flex max-w-1200 flex-col items-center px-24 pt-56 pb-60 md:grid md:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] md:items-start md:gap-64 md:px-40 md:py-110"
+  >
+    <div class="contents md:flex md:flex-col md:gap-18">
+      <Eyebrow>Проблема</Eyebrow>
+      <h2 class="mt-14 text-center font-serif text-heading font-medium md:mt-0 md:text-left">
+        <i class="font-normal text-accent">Знакомо?</i>
+      </h2>
+      <p
+        class="order-last mt-34 text-center font-serif text-quote text-balance md:order-none md:mt-24 md:max-w-420 md:text-left md:text-pretty"
+      >
+        Вам ведь не всё равно. <i class="text-accent">Просто удержать в голове сотни людей невозможно.</i>
+      </p>
+    </div>
+
+    <ol class="mt-30 flex flex-col self-stretch md:mt-0">
+      {
+        problems.map((problem, index) => (
+          <li class="flex gap-16 border-t border-line py-16 last:border-b md:gap-24 md:py-22">
+            <span class="w-28 shrink-0 font-serif text-number text-accent italic md:w-36">{formatNumber(index)}</span>
+            <p class="text-body text-pretty text-ink-2">{problem}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
