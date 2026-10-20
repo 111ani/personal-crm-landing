@@ -1,0 +1,61 @@
+# Push to main -> build dist/ -> rsync --delete to the server -> nginx serves
+# the folder -> the home page must answer 200 with exactly this build.
+# The deploy key can only upload into /var/www/lena-14.ru (rrsync on the server).
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One deploy at a time; a newer push waits for the running one
+concurrency:
+  group: deploy-landing
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      SITE_URL: https://lena-14.ru/
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 12.8.1
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm build
+
+      - name: Set up SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ vars.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Upload dist/ to the server
+        run: |
+          rsync -rlcz --delete --chmod=D755,F644 --itemize-changes \
+            dist/ "${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }}:"
+
+      - name: Check the home page
+        run: |
+          status=$(curl -sS -o served.html -w '%{http_code}' \
+            --retry 3 --retry-all-errors "$SITE_URL")
+          echo "$SITE_URL answered HTTP $status"
+          test "$status" = 200
+          cmp dist/index.html served.html
+          echo "The server serves the index.html built from $GITHUB_SHA"
